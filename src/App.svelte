@@ -1,9 +1,7 @@
 <script lang="ts">
-  import Counter from "./lib/Counter.svelte";
+  import Sync from "./components/Sync.svelte";
 </script>
 
-<h1>Bookmark Shelf</h1>
+<h2>Bookmark Shelf</h2>
 
-<div class="card">
-  <Counter />
-</div>
+<Sync />
