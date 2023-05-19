@@ -1,6 +1,10 @@
 <script lang="ts">
-  const sync = () => {
+  const sync = async () => {
     console.log("Syncing...");
+    console.log(window.location);
+    console.log("chrome", chrome);
+    const tree = await chrome.bookmarks.getTree();
+    console.log("tree", tree);
   };
 </script>
 

@@ -9,5 +9,5 @@
   "icons": {
     "48": "icons8-book-64.png"
   },
-  "permissions": []
+  "permissions": ["bookmarks"]
 }
