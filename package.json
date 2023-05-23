@@ -15,6 +15,7 @@
     "@sveltejs/vite-plugin-svelte": "^2.0.3",
     "@tsconfig/svelte": "^4.0.1",
     "@types/chrome": "^0.0.236",
+    "@types/firefox-webext-browser": "^111.0.1",
     "chokidar-cli": "^3.0.0",
     "prettier": "^2.8.7",
     "prettier-plugin-svelte": "^2.10.0",

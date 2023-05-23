@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Sync from "./components/Sync.svelte";
+  import GoogleDriveConnect from "./components/GoogleDriveConnect.svelte";
 </script>
 
 <h2>Bookmark Shelf</h2>
 
-<Sync />
+<GoogleDriveConnect />
