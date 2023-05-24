@@ -3,11 +3,14 @@
   "name": "Bookmark Shelf",
   "version": "1.0",
   "description": "A simple browser extension to manage your bookmarks.",
-  "action": {
-    "default_popup": "index.html"
-  },
   "icons": {
     "48": "icons8-book-64.png"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["js/background.js"]
   },
   "permissions": ["identity", "bookmarks"]
 }
