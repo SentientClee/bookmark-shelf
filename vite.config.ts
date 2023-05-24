@@ -17,6 +17,7 @@ export default defineConfig({
         entryFileNames: "js/[name].js",
         chunkFileNames: "js/chunks/[name]-[hash].js",
       },
+      external: ["lib/browser-polyfill.min.js"],
     },
   },
 });
