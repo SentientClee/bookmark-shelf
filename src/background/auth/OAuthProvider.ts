@@ -3,13 +3,12 @@ interface TokenData {
   expiry: number | null;
 }
 
-abstract class OAuthProvider {
+export default abstract class OAuthProvider {
   protected clientId: string;
   protected redirectUri: string;
   protected scope: string;
   protected authEndpoint: string;
   protected storageKey: string; // key where specific auth tokens are stored
-  protected tokenData: TokenData;
 
   constructor(
     clientId: string,
@@ -23,34 +22,26 @@ abstract class OAuthProvider {
     this.scope = scope;
     this.authEndpoint = authEndpoint;
     this.storageKey = storageKey;
-
-    // Load token data from storage.local into memory when the TokenManager is instantiated.
-    this.initTokenData();
-  }
-
-  protected async initTokenData() {
-    const storedTokenData = await browser.storage.local.get(this.storageKey);
-    if (storedTokenData) {
-      this.tokenData = storedTokenData[this.storageKey] as TokenData;
-    } else {
-      this.tokenData = {
-        token: null,
-        expiry: null,
-      };
-    }
   }
 
   async getAuthToken(): Promise<string | null> {
-    if (this.tokenData.token && new Date().getTime() < this.tokenData.expiry) {
-      return this.tokenData.token;
+    const storageKeyData = await browser.storage.local.get(this.storageKey);
+    const storedTokenData = storageKeyData[this.storageKey];
+
+    // Return token from storage if it's not expired
+    if (
+      storedTokenData.token &&
+      new Date().getTime() < storedTokenData.expiry
+    ) {
+      return storedTokenData.token;
     }
 
-    this.tokenData = await this.triggerAuthTokenFlow();
+    const newTokenData = await this.triggerAuthTokenFlow();
 
     // Update the copy in storage.local
-    await browser.storage.local.set({ [this.storageKey]: this.tokenData });
+    await browser.storage.local.set({ [this.storageKey]: newTokenData });
 
-    return this.tokenData.token;
+    return newTokenData.token;
   }
 
   protected async triggerAuthTokenFlow(): Promise<TokenData> {

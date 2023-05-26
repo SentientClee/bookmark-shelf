@@ -12,5 +12,5 @@
   "background": {
     "scripts": ["lib/browser-polyfill.min.js", "js/background.js"]
   },
-  "permissions": ["identity", "bookmarks"]
+  "permissions": ["identity", "bookmarks", "storage"]
 }

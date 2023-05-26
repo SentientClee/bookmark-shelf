@@ -1,3 +1,5 @@
+import OAuthProvider from "./OAuthProvider";
+
 export default class GoogleAuthProvider extends OAuthProvider {
   constructor() {
     // TODO: Delete this code when getRedirectURL returns a stable URL.
