@@ -30,6 +30,7 @@ export default abstract class OAuthProvider {
 
     // Return token from storage if it's not expired
     if (
+      storedTokenData &&
       storedTokenData.token &&
       new Date().getTime() < storedTokenData.expiry
     ) {

@@ -25,5 +25,9 @@
     "typescript": "^5.0.2",
     "vite": "^4.3.0",
     "webextension-polyfill": "^0.10.0"
+  },
+  "dependencies": {
+    "@types/node": "^20.2.5",
+    "react-icons": "^4.9.0"
   }
 }
