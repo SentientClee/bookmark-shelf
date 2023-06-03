@@ -1,7 +1,8 @@
 <script lang="ts">
   import GoogleDriveConnect from "./components/GoogleDriveConnect.svelte";
+  import Heading from "./components/Heading.svelte";
 </script>
 
-<h2>Bookmark Shelf</h2>
+<Heading />
 
 <GoogleDriveConnect />
