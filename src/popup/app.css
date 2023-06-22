@@ -27,7 +27,7 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  max-width: 300px
+  max-width: 300px;
   max-height: 500px;
 }
 
