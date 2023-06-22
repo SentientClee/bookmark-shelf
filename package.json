@@ -4,30 +4,29 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "watch": "chokidar 'src/**/*' -c 'npm run build' --initial",
-    "build": "vite build",
-    "preview": "vite preview",
+    "dev": "rollup -c -w",
+    "build": "rollup -c",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.0.3",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-typescript": "^11.1.1",
     "@tsconfig/svelte": "^4.0.1",
     "@types/chrome": "^0.0.236",
+    "@types/node": "^20.2.5",
     "@types/webextension-polyfill": "^0.10.0",
-    "chokidar-cli": "^3.0.0",
     "prettier": "^2.8.7",
     "prettier-plugin-svelte": "^2.10.0",
+    "rollup": "^3.25.1",
+    "rollup-plugin-import-css": "^3.2.1",
+    "rollup-plugin-svelte": "^7.1.5",
     "svelte": "^3.57.0",
     "svelte-check": "^2.10.3",
+    "svelte-icons": "^2.1.0",
+    "svelte-preprocess": "^5.0.4",
     "tslib": "^2.5.0",
     "typescript": "^5.0.2",
-    "vite": "^4.3.0",
     "webextension-polyfill": "^0.10.0"
-  },
-  "dependencies": {
-    "@types/node": "^20.2.5",
-    "svelte-icons": "^2.1.0"
   }
 }
