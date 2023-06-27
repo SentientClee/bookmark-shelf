@@ -3,6 +3,7 @@ import typescript from "@rollup/plugin-typescript";
 import { defineConfig } from "rollup";
 import css from "rollup-plugin-import-css";
 import svelte from "rollup-plugin-svelte";
+import preprocess from "svelte-preprocess";
 
 export default defineConfig([
   {
@@ -11,7 +12,13 @@ export default defineConfig([
       file: "public/assets/popup.js",
       sourcemap: true,
     },
-    plugins: [svelte(), css(), resolve()],
+    plugins: [
+      svelte({
+        preprocess: preprocess(),
+      }),
+      css(),
+      resolve(),
+    ],
   },
   {
     input: "src/background/main.ts",
