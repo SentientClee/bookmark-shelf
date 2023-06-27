@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { isConnected } from "../store/connection.ts";
   import FaGoogleDrive from "svelte-icons/fa/FaGoogleDrive.svelte";
 
   const connect = async () => {
@@ -6,10 +7,12 @@
   };
 </script>
 
-<button on:click={connect}>
-  <span>Connect to Google Drive</span>
-  <div class="icon"><FaGoogleDrive /></div>
-</button>
+{#if !$isConnected}
+  <button on:click={connect}>
+    <span>Connect to Google Drive</span>
+    <div class="icon"><FaGoogleDrive /></div>
+  </button>
+{/if}
 
 <style>
   button {
@@ -18,7 +21,7 @@
     gap: 1rem;
   }
 
-  .icon {
+  button > .icon {
     color: white;
     width: 32px;
     height: 32px;
