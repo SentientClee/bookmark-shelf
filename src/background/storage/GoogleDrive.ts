@@ -5,8 +5,8 @@ export default class GoogleDrive {
   private fileId: string;
   private headers: Headers;
 
-  constructor() {
-    this.authProvider = new GoogleAuthProvider();
+  constructor({ authProvider }) {
+    this.authProvider = authProvider;
     this.headers = new Headers();
     this.fileId = null;
   }

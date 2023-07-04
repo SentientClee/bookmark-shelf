@@ -8,16 +8,27 @@
   onMount(checkConnection);
 </script>
 
-<Header />
-<div class="container">
-  <GoogleDriveConnect />
+<div class="app-container">
+  <Header />
+  <div class="content">
+    <GoogleDriveConnect />
+  </div>
 </div>
 
 <style>
-  .container {
+  .app-container {
+    width: 450px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .content {
+    flex-grow: 1;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
   }
 </style>

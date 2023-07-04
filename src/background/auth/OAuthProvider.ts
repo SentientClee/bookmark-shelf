@@ -24,16 +24,18 @@ export default abstract class OAuthProvider {
     this.storageKey = storageKey;
   }
 
-  async getAuthToken(): Promise<string | null> {
-    const storageKeyData = await browser.storage.local.get(this.storageKey);
-    const storedTokenData = storageKeyData[this.storageKey];
+  async isTokenValid(): Promise<boolean> {
+    const storedTokenData = await this.fetchStoredToken();
+    if (storedTokenData !== null) {
+      return true;
+    }
 
-    // Return token from storage if it's not expired
-    if (
-      storedTokenData &&
-      storedTokenData.token &&
-      new Date().getTime() < storedTokenData.expiry
-    ) {
+    return false;
+  }
+
+  async getAuthToken(): Promise<string | null> {
+    const storedTokenData = await this.fetchStoredToken();
+    if (storedTokenData) {
       return storedTokenData.token;
     }
 
@@ -43,6 +45,22 @@ export default abstract class OAuthProvider {
     await browser.storage.local.set({ [this.storageKey]: newTokenData });
 
     return newTokenData.token;
+  }
+
+  protected async fetchStoredToken(): Promise<TokenData | null> {
+    const storageKeyData = await browser.storage.local.get(this.storageKey);
+    const storedTokenData = storageKeyData[this.storageKey];
+
+    // Return token from storage if it's not expired
+    if (
+      storedTokenData &&
+      storedTokenData.token &&
+      new Date().getTime() < storedTokenData.expiry
+    ) {
+      return storedTokenData;
+    } else {
+      return null;
+    }
   }
 
   protected async triggerAuthTokenFlow(): Promise<TokenData> {

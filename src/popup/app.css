@@ -14,16 +14,14 @@
   -webkit-text-size-adjust: 100%;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-#app {
-  margin: 0 auto;
-  width: 450px;
-  height: 600px;
+body {
+  margin: 0;
 }
 
 button {

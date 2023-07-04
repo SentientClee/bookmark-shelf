@@ -3,7 +3,10 @@
   import FaGoogleDrive from "svelte-icons/fa/FaGoogleDrive.svelte";
 
   const connect = async () => {
-    browser.runtime.sendMessage({ type: "connect_to_google_drive" });
+    const res = await browser.runtime.sendMessage({
+      type: "connect_to_google_drive",
+    });
+    isConnected.set(res);
   };
 </script>
 

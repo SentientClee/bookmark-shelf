@@ -1,19 +1,24 @@
+import GoogleAuthProvider from "./auth/GoogleOAuthProvider";
 import GoogleDrive from "./storage/GoogleDrive";
+
+const authProvider = new GoogleAuthProvider();
+const gDrive = new GoogleDrive({ authProvider });
 
 browser.runtime.onMessage.addListener(
   (request, _, sendResponse: (obj: any) => void) => {
     if (request.type === "is_connected") {
-      // Determine if we have a stored token or not and when it expires.
-      sendResponse(true);
+      authProvider.isTokenValid().then(sendResponse);
+
+      return true;
     }
 
     if (request.type === "connect_to_google_drive") {
-      const gDrive = new GoogleDrive();
+      // Trigger fetching an auth token if we are not 'connected'
+      authProvider.getAuthToken().then(() => {
+        sendResponse(true);
+      });
 
-      // Get bookmarks and store them all as a json file in Google Drive
-      // gDrive.createFile({ womp: "diggity" });
-
-      // sendResponse();
+      return true;
     }
   }
 );
