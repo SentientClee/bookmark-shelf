@@ -1,3 +1,4 @@
+import type { BackupFile } from "../../types";
 import GoogleAuthProvider from "../auth/GoogleOAuthProvider";
 
 export default class GoogleDrive {
@@ -11,6 +12,38 @@ export default class GoogleDrive {
     this.fileId = null;
   }
 
+  async getFiles(): Promise<BackupFile[]> {
+    const token = await this.authProvider.getAuthToken();
+
+    if (!token) {
+      throw new Error("No access token provided");
+    }
+
+    let url = "https://www.googleapis.com/drive/v3/files";
+    this.headers.append("Authorization", "Bearer " + token);
+    this.headers.append("Content-Type", "application/json");
+
+    let request = new Request(url, {
+      method: "GET",
+      headers: this.headers,
+    });
+
+    try {
+      let response = await fetch(request);
+      if (!response.ok) {
+        throw new Error(`Error status: ${response.status}`);
+      }
+      let data = await response.json();
+      console.log(data);
+      // TODO: transform data and return it
+    } catch (err) {
+      console.error(err);
+    }
+
+    return [];
+  }
+
+  // TODO: Type out the response.
   async createFile(fileContent: object): Promise<any> {
     const token = await this.authProvider.getAuthToken();
 
@@ -70,7 +103,7 @@ export default class GoogleDrive {
     try {
       let response = await fetch(request);
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error(`Error status: ${response.status}`);
       }
       let data = await response.json();
       console.log(data);

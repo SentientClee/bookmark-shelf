@@ -10,12 +10,10 @@
   };
 </script>
 
-{#if !$isConnected}
-  <button on:click={connect}>
-    <span>Connect to Google Drive</span>
-    <div class="icon"><FaGoogleDrive /></div>
-  </button>
-{/if}
+<button on:click={connect}>
+  <span>Connect to Google Drive</span>
+  <div class="icon"><FaGoogleDrive /></div>
+</button>
 
 <style>
   button {
