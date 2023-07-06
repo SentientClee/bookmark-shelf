@@ -30,10 +30,7 @@
     justify-content: center;
   }
   .content {
-    flex-grow: 1;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 100%;
   }
 </style>
