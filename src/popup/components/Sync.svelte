@@ -1,34 +1,35 @@
 <script lang="ts">
   import FaGoogleDrive from "svelte-icons/fa/FaGoogleDrive.svelte";
+  import {
+    fetchBackupFiles,
+    createBackupFile,
+    backupFiles,
+  } from "../store/backups";
+  import { onMount } from "svelte";
 
-  const fetchBackupFiles = async () => {
-    console.log("CALLED POPUP");
-    const res = await browser.runtime.sendMessage({
-      type: "fetch_backup_files",
-    });
-  };
-
-  const createBackupFile = async () => {
-    const res = await browser.runtime.sendMessage({
-      type: "create_backup_file",
-    });
-  };
+  onMount(fetchBackupFiles);
 </script>
 
 <div class="container">
-  <button on:click={fetchBackupFiles}>
-    <span>Fetch files</span>
-    <div class="icon"><FaGoogleDrive /></div>
-  </button>
+  <div class="list" />
+
   <input placeholder="Backup file name..." />
-  <button on:click={createBackupFile}>
-    <span>Create backup file</span>
-    <div class="icon"><FaGoogleDrive /></div>
+  <button
+    on:click={() => {
+      createBackupFile("bookmarks.json");
+    }}
+  >
+    <span>Create backup</span>
   </button>
 </div>
 
 <style>
   .container {
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
   }
 
   button {

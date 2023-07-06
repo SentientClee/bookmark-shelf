@@ -71,6 +71,7 @@ export default class GoogleDrive {
 
       let metadata = {
         name: "bookmarks.json",
+        mimeType: "application/json",
       };
 
       this.headers.set("Content-Type", "application/json");
