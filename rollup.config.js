@@ -16,7 +16,7 @@ export default defineConfig([
       svelte({
         preprocess: preprocess(),
       }),
-      typescript(),
+      typescript({ allowImportingTsExtensions: false }),
       css(),
       resolve(),
     ],
