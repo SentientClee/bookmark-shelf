@@ -18,12 +18,12 @@ browser.runtime.onMessage.addListener(
     }
 
     if (request.type === "fetch_backup_files") {
-      console.log("CALLED");
       gDrive.getFiles().then(sendResponse);
     }
 
     if (request.type === "create_backup_file") {
-      gDrive.createFile({ womp: "diggity" }).then(sendResponse);
+      console.log("request.name", request.name);
+      gDrive.createFile(request.name, { womp: "diggity" }).then(sendResponse);
     }
 
     // Return 'true' to make 'sendResponse' available to awaited async calls

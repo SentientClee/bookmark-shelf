@@ -7,6 +7,7 @@ export const fetchBackupFiles = async () => {
   const res = await browser.runtime.sendMessage({
     type: "fetch_backup_files",
   });
+  console.log("fetchBackupFiles", res);
 };
 
 export const createBackupFile = async (name: string) => {
@@ -14,4 +15,5 @@ export const createBackupFile = async (name: string) => {
     type: "create_backup_file",
     name,
   });
+  console.log("createBackupFile", res);
 };

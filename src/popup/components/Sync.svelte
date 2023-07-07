@@ -20,9 +20,12 @@
   <div class="input">
     <input bind:value={filename} placeholder="Enter filename..." />
     <button
-      on:click={() => {
+      on:click={async () => {
         isLoading = true;
-        createBackupFile(filename);
+        console.log("filename", filename);
+        await createBackupFile(filename);
+        await fetchBackupFiles();
+        isLoading = false;
       }}
       disabled={isLoading}
     >
