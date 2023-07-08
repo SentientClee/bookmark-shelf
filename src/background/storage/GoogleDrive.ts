@@ -29,12 +29,10 @@ export default class GoogleDrive {
       }
       const data = await response.json();
       console.log(data);
+      return data.files;
     } catch (err) {
       console.error(err);
     }
-
-    // TODO: transform data and return it
-    return [];
   }
 
   // TODO: Type out the response.

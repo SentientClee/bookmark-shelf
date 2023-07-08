@@ -22,7 +22,6 @@ browser.runtime.onMessage.addListener(
     }
 
     if (request.type === "create_backup_file") {
-      console.log("request.name", request.name);
       gDrive.createFile(request.name, { womp: "diggity" }).then(sendResponse);
     }
 
