@@ -30,4 +30,10 @@
   button {
     border-radius: 8px;
   }
+
+  button > .icon {
+    color: white;
+    width: 32px;
+    height: 32px;
+  }
 </style>
