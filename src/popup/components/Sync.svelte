@@ -1,5 +1,6 @@
 <script lang="ts">
   import FaFile from "svelte-icons/fa/FaFile.svelte";
+  import FaTrash from "svelte-icons/fa/FaTrash.svelte";
   import { SyncLoader } from "svelte-loading-spinners";
   import {
     fetchBackupFiles,
@@ -7,14 +8,27 @@
     backupFiles,
   } from "../store/backups";
   import { onMount } from "svelte";
+  import Modal from "./Modal.svelte";
+  import type { BackupFile } from "../../types";
 
   let filename: string;
+  let toDelete: BackupFile;
   let isLoadingCreate: boolean;
   let isLoadingFiles: boolean;
+  let showModal: boolean;
 
   let backupHeaderText = "Backup files";
   $: if ($backupFiles) {
     backupHeaderText = `Backup files (${$backupFiles.length})`;
+  }
+
+  function closeModal() {
+    showModal = false;
+  }
+
+  // TODO:
+  function deleteFile() {
+    console.log("To Delete: ", toDelete);
   }
 
   onMount(async () => {
@@ -44,8 +58,20 @@
       <div class="list">
         {#each $backupFiles as file}
           <div class="file">
-            <div class="icon"><FaFile /></div>
-            {file.name}
+            <div class="filename">
+              <div class="icon"><FaFile /></div>
+              {file.name}
+            </div>
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <div
+              on:click={() => {
+                showModal = true;
+                toDelete = file;
+              }}
+              class="icon"
+            >
+              <FaTrash />
+            </div>
           </div>
         {/each}
       </div>
@@ -56,6 +82,7 @@
   <div class="input">
     <input bind:value={filename} placeholder="Enter filename..." />
     <button
+      class="btn-primary"
       on:click={async () => {
         isLoadingCreate = true;
         await createBackupFile(filename);
@@ -69,6 +96,14 @@
     </button>
   </div>
 </div>
+
+<Modal show={showModal} on:close={closeModal}>
+  <h4>Are you sure you want to delete backup file "{toDelete?.name}"?</h4>
+  <div class="file-delete-actions">
+    <button class="btn-secondary" on:click={closeModal}>Cancel</button>
+    <button class="btn-primary" on:click={deleteFile}>Delete</button>
+  </div>
+</Modal>
 
 <style>
   .container {
@@ -101,15 +136,28 @@
   .file {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 16px;
-    gap: 8px;
     border: 1px solid #5c5470;
     border-radius: 12px;
     cursor: pointer;
   }
 
+  .filename {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   .file:hover {
     border: 1px solid white;
+  }
+
+  .file-delete-actions {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 1rem;
   }
 
   .icon {
@@ -122,38 +170,5 @@
     width: 100%;
     display: flex;
     gap: 2px;
-  }
-
-  input {
-    border: 1px solid transparent;
-    flex-grow: 1;
-  }
-  input:hover {
-    border-color: #646cff;
-  }
-  input:focus,
-  input:focus-visible {
-    outline: 2px solid #646cff;
-  }
-
-  button {
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background-color: #1a1a1a;
-    cursor: pointer;
-    transition: border-color 0.25s;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  button:hover {
-    border-color: #646cff;
-  }
-  button:focus,
-  button:focus-visible {
-    outline: 2px solid #646cff;
   }
 </style>

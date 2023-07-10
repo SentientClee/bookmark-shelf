@@ -39,3 +39,44 @@ body {
 .fourth-color {
   background: #2a2438;
 }
+
+button {
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #5c5470;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 2px solid #646cff;
+}
+
+.btn-primary {
+  background-color: #5c5470;
+}
+
+.btn-secondary {
+  background-color: #1a1a1a;
+}
+
+input {
+  border: 1px solid transparent;
+  flex-grow: 1;
+}
+input:hover {
+  border-color: #646cff;
+}
+input:focus,
+input:focus-visible {
+  outline: 2px solid #646cff;
+}
