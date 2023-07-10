@@ -11,7 +11,7 @@
   </div>
 
   <div class="status">
-    <div class={$isConnected ? "status-icon connected" : "status-icon"}>
+    <div class="status-icon" class:connected={$isConnected}>
       <FaGoogleDrive />
     </div>
     {#if $isConnected}
