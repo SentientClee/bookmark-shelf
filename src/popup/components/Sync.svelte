@@ -7,6 +7,7 @@
     createBackupFile,
     deleteBackupFile,
     backupFiles,
+    selectedBackup,
   } from "../store/backups";
   import { onMount } from "svelte";
   import Modal from "./Modal.svelte";
@@ -42,6 +43,34 @@
 
 <div class="container">
   <h3>Current backup</h3>
+  {#if !$selectedBackup}
+    <p>None</p>
+  {:else}
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <div
+      on:click={() => {
+        $selectedBackup = undefined;
+      }}
+      class="file"
+    >
+      <div class="filename">
+        <div class="icon"><FaFile /></div>
+        {$selectedBackup.name}
+      </div>
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <div
+        on:click={(event) => {
+          event.stopPropagation();
+          showModal = true;
+          toDelete = $selectedBackup;
+        }}
+        class="icon"
+      >
+        <FaTrash />
+      </div>
+    </div>
+  {/if}
+
   <h3>{backupHeaderText}</h3>
 
   <div class="backup-files">
@@ -52,14 +81,21 @@
     {:else if $backupFiles !== undefined}
       <div class="list">
         {#each $backupFiles as file}
-          <div class="file">
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <div
+            on:click={() => {
+              $selectedBackup = file;
+            }}
+            class="file"
+          >
             <div class="filename">
               <div class="icon"><FaFile /></div>
               {file.name}
             </div>
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <div
-              on:click={() => {
+              on:click={(event) => {
+                event.stopPropagation();
                 showModal = true;
                 toDelete = file;
               }}
@@ -126,7 +162,6 @@
     flex-direction: column;
     gap: 16px;
     overflow-y: scroll;
-    padding-right: 12px;
   }
 
   .file {
@@ -137,6 +172,7 @@
     border: 1px solid #5c5470;
     border-radius: 12px;
     cursor: pointer;
+    margin-right: 12px;
   }
 
   .filename {
