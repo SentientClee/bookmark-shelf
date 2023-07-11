@@ -1,7 +1,7 @@
 <script lang="ts">
   import FaFile from "svelte-icons/fa/FaFile.svelte";
   import FaTrash from "svelte-icons/fa/FaTrash.svelte";
-  import { SyncLoader } from "svelte-loading-spinners";
+  import { RingLoader } from "svelte-loading-spinners";
   import {
     fetchBackupFiles,
     createBackupFile,
@@ -46,8 +46,8 @@
 
   <div class="backup-files">
     {#if isLoadingFiles}
-      <div>
-        <SyncLoader size="50" color="#dbd8e3" unit="px" />
+      <div class="loader">
+        <RingLoader size="100" color="#dbd8e3" unit="px" />
       </div>
     {:else if $backupFiles !== undefined}
       <div class="list">
@@ -111,7 +111,14 @@
   .backup-files {
     margin-bottom: 1rem;
     overflow-y: scroll;
-    max-height: 220px;
+    height: 220px;
+  }
+
+  .loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
 
   .list {
