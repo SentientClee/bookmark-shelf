@@ -42,36 +42,7 @@
 </script>
 
 <div class="container">
-  <h3>Current backup</h3>
-  {#if !$selectedBackup}
-    <p>None</p>
-  {:else}
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <div
-      on:click={() => {
-        $selectedBackup = undefined;
-      }}
-      class="file"
-    >
-      <div class="filename">
-        <div class="icon"><FaFile /></div>
-        {$selectedBackup.name}
-      </div>
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <div
-        on:click={(event) => {
-          event.stopPropagation();
-          showModal = true;
-          toDelete = $selectedBackup;
-        }}
-        class="icon"
-      >
-        <FaTrash />
-      </div>
-    </div>
-  {/if}
-
-  <h3>{backupHeaderText}</h3>
+  <h4>{backupHeaderText}</h4>
 
   <div class="backup-files">
     {#if isLoadingFiles}
@@ -109,7 +80,7 @@
     {/if}
   </div>
 
-  <h3>Create new backup file</h3>
+  <h4>Create new backup file</h4>
   <div class="input">
     <input bind:value={filename} placeholder="Enter filename..." />
     <button
