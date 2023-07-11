@@ -1,6 +1,8 @@
 <script lang="ts">
   import FaFile from "svelte-icons/fa/FaFile.svelte";
   import FaTrash from "svelte-icons/fa/FaTrash.svelte";
+  import GoSync from "svelte-icons/go/GoSync.svelte";
+  import GoPlus from "svelte-icons/go/GoPlus.svelte";
   import { RingLoader } from "svelte-loading-spinners";
   import {
     fetchBackupFiles,
@@ -16,22 +18,41 @@
   let filename: string;
   let toDelete: BackupFile;
   let isLoadingFiles: boolean;
-  let showModal: boolean;
+  let showDeleteModal: boolean;
+  let showCreateModal: boolean;
 
   let backupHeaderText = "Backup files";
   $: if ($backupFiles) {
     backupHeaderText = `Backup files (${$backupFiles.length})`;
   }
 
-  function closeModal() {
-    showModal = false;
+  function closeDeleteModal() {
+    showDeleteModal = false;
+  }
+
+  function closeCreateModal() {
+    showCreateModal = false;
   }
 
   async function deleteFile() {
     isLoadingFiles = true;
-    closeModal();
+    closeDeleteModal();
     await deleteBackupFile(toDelete.id);
     isLoadingFiles = false;
+
+    // Reset selected backup file
+    if ($selectedBackup.id === toDelete.id) {
+      $selectedBackup = undefined;
+    }
+  }
+
+  async function createFile() {
+    isLoadingFiles = true;
+    closeCreateModal();
+    await createBackupFile(filename);
+    await fetchBackupFiles();
+    isLoadingFiles = false;
+    filename = "";
   }
 
   onMount(async () => {
@@ -42,7 +63,14 @@
 </script>
 
 <div class="container">
-  <h4>{backupHeaderText}</h4>
+  <div class="backup-header">
+    <h4>{backupHeaderText}</h4>
+    <button on:click={() => (showCreateModal = true)} class="icon-button">
+      <div class="create-icon">
+        <GoPlus />
+      </div>
+    </button>
+  </div>
 
   <div class="backup-files">
     {#if isLoadingFiles}
@@ -60,49 +88,49 @@
             class="file"
           >
             <div class="filename">
-              <div class="icon"><FaFile /></div>
+              {#if $selectedBackup?.id === file.id}
+                <div class="icon selected"><GoSync /></div>
+              {:else}
+                <div class="icon"><FaFile /></div>
+              {/if}
               {file.name}
             </div>
-            <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div
+            <button
+              class="icon-button"
               on:click={(event) => {
                 event.stopPropagation();
-                showModal = true;
+                showDeleteModal = true;
                 toDelete = file;
               }}
-              class="icon"
             >
-              <FaTrash />
-            </div>
+              <div class="icon">
+                <FaTrash />
+              </div>
+            </button>
           </div>
         {/each}
       </div>
     {/if}
   </div>
-
-  <h4>Create new backup file</h4>
-  <div class="input">
-    <input bind:value={filename} placeholder="Enter filename..." />
-    <button
-      class="btn-primary"
-      on:click={async () => {
-        isLoadingFiles = true;
-        await createBackupFile(filename);
-        await fetchBackupFiles();
-        isLoadingFiles = false;
-        filename = "";
-      }}
-      disabled={isLoadingFiles}
-    >
-      <span>Create</span>
-    </button>
-  </div>
 </div>
 
-<Modal show={showModal} on:close={closeModal}>
+<!-- Create Modal -->
+<Modal show={showCreateModal} on:close={closeCreateModal}>
+  <div class="create-modal">
+    <h4>New backup file</h4>
+    <input bind:value={filename} placeholder="Enter filename..." />
+    <div class="modal-actions">
+      <button class="btn-secondary" on:click={closeCreateModal}>Cancel</button>
+      <button class="btn-primary" on:click={createFile}>Create</button>
+    </div>
+  </div>
+</Modal>
+
+<!-- Delete Modal -->
+<Modal show={showDeleteModal} on:close={closeDeleteModal}>
   <h4>Are you sure you want to delete backup file "{toDelete?.name}"?</h4>
-  <div class="file-delete-actions">
-    <button class="btn-secondary" on:click={closeModal}>Cancel</button>
+  <div class="modal-actions">
+    <button class="btn-secondary" on:click={closeDeleteModal}>Cancel</button>
     <button class="btn-primary" on:click={deleteFile}>Delete</button>
   </div>
 </Modal>
@@ -110,15 +138,22 @@
 <style>
   .container {
     width: 100%;
-    padding: 0 1rem;
+    padding: 0 2rem;
     display: flex;
     flex-direction: column;
+  }
+
+  .backup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .backup-files {
     margin-bottom: 1rem;
     overflow-y: scroll;
-    height: 220px;
+    scrollbar-width: thin;
+    height: 300px;
   }
 
   .loader {
@@ -132,7 +167,6 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    overflow-y: scroll;
   }
 
   .file {
@@ -143,7 +177,6 @@
     border: 1px solid #5c5470;
     border-radius: 12px;
     cursor: pointer;
-    margin-right: 12px;
   }
 
   .filename {
@@ -156,11 +189,44 @@
     border: 1px solid white;
   }
 
-  .file-delete-actions {
+  .create-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 300px;
+  }
+
+  .create-modal > h4 {
+    margin: 0;
+  }
+
+  .create-modal > input {
+    height: 40px;
+    width: 100%;
+  }
+
+  .modal-actions {
     display: flex;
     align-items: center;
     justify-content: end;
     gap: 1rem;
+  }
+
+  .icon-button {
+    padding: 6px;
+    border-radius: 4px;
+    background: inherit;
+  }
+  .icon-button:hover {
+    background: #352f44;
+    border-color: transparent;
+  }
+
+  .create-icon {
+    color: white;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
   }
 
   .icon {
@@ -169,9 +235,7 @@
     height: 16px;
   }
 
-  .input {
-    width: 100%;
-    display: flex;
-    gap: 2px;
+  .selected {
+    color: #6f9b59;
   }
 </style>
