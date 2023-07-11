@@ -25,6 +25,10 @@ browser.runtime.onMessage.addListener(
       gDrive.createFile(request.name, { womp: "diggity" }).then(sendResponse);
     }
 
+    if (request.type === "delete_backup_file") {
+      gDrive.deleteFile(request.id).then(sendResponse);
+    }
+
     // Return 'true' to make 'sendResponse' available to awaited async calls
     return true;
   }

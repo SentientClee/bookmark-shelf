@@ -5,6 +5,7 @@
   import {
     fetchBackupFiles,
     createBackupFile,
+    deleteBackupFile,
     backupFiles,
   } from "../store/backups";
   import { onMount } from "svelte";
@@ -13,7 +14,6 @@
 
   let filename: string;
   let toDelete: BackupFile;
-  let isLoadingCreate: boolean;
   let isLoadingFiles: boolean;
   let showModal: boolean;
 
@@ -26,9 +26,11 @@
     showModal = false;
   }
 
-  // TODO:
-  function deleteFile() {
-    console.log("To Delete: ", toDelete);
+  async function deleteFile() {
+    isLoadingFiles = true;
+    closeModal();
+    await deleteBackupFile(toDelete.id);
+    isLoadingFiles = false;
   }
 
   onMount(async () => {
@@ -40,14 +42,7 @@
 
 <div class="container">
   <h3>Current backup</h3>
-  <div class="backup-files-header">
-    <h3>{backupHeaderText}</h3>
-    {#if isLoadingCreate}
-      <div>
-        <SyncLoader size="30" color="#dbd8e3" unit="px" />
-      </div>
-    {/if}
-  </div>
+  <h3>{backupHeaderText}</h3>
 
   <div class="backup-files">
     {#if isLoadingFiles}
@@ -84,13 +79,13 @@
     <button
       class="btn-primary"
       on:click={async () => {
-        isLoadingCreate = true;
+        isLoadingFiles = true;
         await createBackupFile(filename);
         await fetchBackupFiles();
-        isLoadingCreate = false;
+        isLoadingFiles = false;
         filename = "";
       }}
-      disabled={isLoadingCreate}
+      disabled={isLoadingFiles}
     >
       <span>Create</span>
     </button>
@@ -117,12 +112,6 @@
     margin-bottom: 1rem;
     overflow-y: scroll;
     max-height: 220px;
-  }
-
-  .backup-files-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
   }
 
   .list {

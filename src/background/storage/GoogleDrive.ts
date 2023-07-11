@@ -35,7 +35,6 @@ export default class GoogleDrive {
     }
   }
 
-  // TODO: Type out the response.
   async createFile(name: string, fileContent: Object) {
     const token = await this.authProvider.getAuthToken();
     if (!token) {
@@ -73,7 +72,7 @@ export default class GoogleDrive {
   }
 
   async getFile(fileId: string) {
-    if (fileId) {
+    if (!fileId) {
       throw new Error("File not created yet");
     }
 
@@ -90,6 +89,36 @@ export default class GoogleDrive {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         }),
+      }
+    );
+
+    try {
+      const response = await fetch(request);
+      if (!response.ok) {
+        throw new Error(`Error status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async deleteFile(fileId: string) {
+    if (!fileId) {
+      throw new Error("Missing fileId to delete");
+    }
+
+    const token = await this.authProvider.getAuthToken();
+    if (!token) {
+      throw new Error("No access token provided");
+    }
+
+    const request = new Request(
+      `https://www.googleapis.com/drive/v3/files/${fileId}`,
+      {
+        method: "DELETE",
+        headers: new Headers({ Authorization: `Bearer ${token}` }),
       }
     );
 
