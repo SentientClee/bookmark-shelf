@@ -4,4 +4,6 @@ This template should help get you started developing with Svelte and TypeScript 
 
 ## TODO
 
-- Build out UI
+- Create Svelte tabs
+- Build out bookmarks UI
+- Build out sync actions UI

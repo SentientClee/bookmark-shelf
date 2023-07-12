@@ -2,7 +2,27 @@ import { get, writable } from "svelte/store";
 import type { BackupFile } from "../../types";
 
 export const backupFiles = writable<BackupFile[]>();
-export const selectedBackup = writable<BackupFile>();
+
+function createExtensionStorageStore(key: string, startValue: any) {
+  const { subscribe, set, update } = writable(startValue);
+
+  // Fetch initial value from extension storage
+  browser.storage.local.get(key).then((result: any) => {
+    set(result[key] || startValue);
+  });
+
+  return {
+    subscribe,
+    set: (value: any) => {
+      browser.storage.local.set({ [key]: value }).then(() => {
+        set(value);
+      });
+    },
+    update,
+  };
+}
+
+export const selectedBackup = createExtensionStorageStore("backup", undefined);
 
 export const fetchBackupFiles = async () => {
   const res = await browser.runtime.sendMessage({
