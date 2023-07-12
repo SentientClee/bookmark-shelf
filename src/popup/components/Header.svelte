@@ -20,10 +20,13 @@
       <p>{$isConnected ? "Connected" : "Disconnected"}</p>
     </div>
     <div class="connection">
-      <div class="status-icon" class:connected={$selectedBackup}>
+      <div
+        class="status-icon"
+        class:connected={$selectedBackup && $isConnected}
+      >
         <GoSync />
       </div>
-      <p>{$selectedBackup?.name || "None"}</p>
+      <p>{($isConnected && $selectedBackup?.name) || "None"}</p>
     </div>
   </div>
 </div>
