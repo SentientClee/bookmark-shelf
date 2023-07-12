@@ -2,7 +2,8 @@
   import { onMount } from "svelte";
   import GoogleDriveConnect from "./components/GoogleDriveConnect.svelte";
   import Header from "./components/Header.svelte";
-  import { checkConnection } from "./store/connection.ts";
+  import Sync from "./components/Sync.svelte";
+  import { isConnected, checkConnection } from "./store/connection.ts";
 
   // Initialize store
   onMount(checkConnection);
@@ -11,7 +12,11 @@
 <div class="app-container">
   <Header />
   <div class="content">
-    <GoogleDriveConnect />
+    {#if !$isConnected}
+      <GoogleDriveConnect />
+    {:else}
+      <Sync />
+    {/if}
   </div>
 </div>
 
@@ -25,10 +30,7 @@
     justify-content: center;
   }
   .content {
-    flex-grow: 1;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 100%;
   }
 </style>

@@ -10,18 +10,25 @@
   };
 </script>
 
-{#if !$isConnected}
+<div class="container">
   <button on:click={connect}>
     <span>Connect to Google Drive</span>
     <div class="icon"><FaGoogleDrive /></div>
   </button>
-{/if}
+</div>
 
 <style>
-  button {
+  .container {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  button {
+    border-radius: 8px;
   }
 
   button > .icon {

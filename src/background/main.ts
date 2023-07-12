@@ -8,8 +8,6 @@ browser.runtime.onMessage.addListener(
   (request, _, sendResponse: (obj: any) => void) => {
     if (request.type === "is_connected") {
       authProvider.isTokenValid().then(sendResponse);
-
-      return true;
     }
 
     if (request.type === "connect_to_google_drive") {
@@ -17,8 +15,21 @@ browser.runtime.onMessage.addListener(
       authProvider.getAuthToken().then(() => {
         sendResponse(true);
       });
-
-      return true;
     }
+
+    if (request.type === "fetch_backup_files") {
+      gDrive.getFiles().then(sendResponse);
+    }
+
+    if (request.type === "create_backup_file") {
+      gDrive.createFile(request.name, { womp: "diggity" }).then(sendResponse);
+    }
+
+    if (request.type === "delete_backup_file") {
+      gDrive.deleteFile(request.id).then(sendResponse);
+    }
+
+    // Return 'true' to make 'sendResponse' available to awaited async calls
+    return true;
   }
 );

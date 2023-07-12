@@ -16,6 +16,7 @@ export default defineConfig([
       svelte({
         preprocess: preprocess(),
       }),
+      typescript({ allowImportingTsExtensions: false }),
       css(),
       resolve(),
     ],
@@ -26,8 +27,6 @@ export default defineConfig([
       file: "public/assets/background.js",
       sourcemap: true,
     },
-    plugins: [
-      typescript({ include: ["src/background/**/*.ts", "src/global.d.ts"] }),
-    ],
+    plugins: [typescript({ allowImportingTsExtensions: false })],
   },
 ]);
