@@ -13,6 +13,5 @@ This is a cross browser extension for managing bookmarks and backing them up to 
 
 ## TODO
 
-- Create Svelte tabs
 - Build out bookmarks UI
 - Build out sync actions UI
