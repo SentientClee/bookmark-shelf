@@ -66,7 +66,7 @@
   .tabs {
     border-top: 1px solid #5c5470;
     display: flex;
-    height: 64px;
+    height: 48px;
   }
 
   .tab-button {
@@ -74,7 +74,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 1.1rem;
+    padding: 12px;
     background: #2a2438;
     transition: none;
   }
