@@ -14,4 +14,14 @@ This is a cross browser extension for managing bookmarks and backing them up to 
 ## TODO
 
 - Build out bookmarks UI
+  - List out bookmarks
+  - Search bookmarks
+  - Add bookmarks
+  - Delete bookmarks
+  - Edit bookmarks? (Not sure what editable items there would be)
 - Build out sync actions UI
+  - Sync bookmarks to backup
+  - Sync backup to bookmarks
+  - Merge backup and bookmarks
+  - Should these be separate actions or should we just have 1 merge action?
+  - Automatic syncing based on bookmark events?
