@@ -2,8 +2,8 @@
   import { onMount } from "svelte";
   import GoogleDriveConnect from "./components/GoogleDriveConnect.svelte";
   import Header from "./components/Header.svelte";
-  import Sync from "./components/Sync.svelte";
   import { isConnected, checkConnection } from "./store/connection.ts";
+  import Tabs from "./components/Tabs.svelte";
 
   // Initialize store
   onMount(checkConnection);
@@ -15,7 +15,7 @@
     {#if !$isConnected}
       <GoogleDriveConnect />
     {:else}
-      <Sync />
+      <Tabs />
     {/if}
   </div>
 </div>
@@ -29,6 +29,7 @@
     align-items: center;
     justify-content: center;
   }
+
   .content {
     width: 100%;
     height: 100%;
