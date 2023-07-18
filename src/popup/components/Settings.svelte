@@ -153,7 +153,7 @@
     margin-bottom: 1rem;
     overflow-y: scroll;
     scrollbar-width: thin;
-    height: 300px;
+    max-height: 350px;
   }
 
   .loader {

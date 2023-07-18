@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
   import GoogleDriveConnect from "./components/GoogleDriveConnect.svelte";
   import Header from "./components/Header.svelte";
-  import Sync from "./components/Sync.svelte";
   import { isConnected, checkConnection } from "./store/connection.ts";
   import Tabs from "./components/Tabs.svelte";
 
@@ -16,7 +15,6 @@
     {#if !$isConnected}
       <GoogleDriveConnect />
     {:else}
-      <!-- <Sync /> -->
       <Tabs />
     {/if}
   </div>

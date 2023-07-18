@@ -3,27 +3,27 @@
   import MdSettings from "svelte-icons/md/MdSettings.svelte";
   import FaBookmark from "svelte-icons/fa/FaBookmark.svelte";
   import { writable } from "svelte/store";
+  import Settings from "./Settings.svelte";
 
   // Writable store to keep track of the active tab
-  let activeTab = writable("home");
+  let activeTab = writable("bookmarks");
 </script>
 
 <div class="container">
   <!-- Tab Contents -->
-  {#if $activeTab === "home"}
+  {#if $activeTab === "bookmarks"}
     <div class="tab-content">
       <h1>Home Tab</h1>
       <p>Welcome to the home tab.</p>
     </div>
-  {:else if $activeTab === "profile"}
+  {:else if $activeTab === "sync"}
     <div class="tab-content">
       <h1>Profile Tab</h1>
       <p>Welcome to the profile tab.</p>
     </div>
   {:else if $activeTab === "settings"}
     <div class="tab-content">
-      <h1>Settings Tab</h1>
-      <p>Welcome to the settings tab.</p>
+      <Settings />
     </div>
   {/if}
 
@@ -31,16 +31,16 @@
   <div class="tabs">
     <button
       class="tab-button"
-      on:click={() => ($activeTab = "home")}
-      class:active={$activeTab === "home"}
+      on:click={() => ($activeTab = "bookmarks")}
+      class:active={$activeTab === "bookmarks"}
     >
       <FaBookmark />
     </button>
 
     <button
       class="tab-button"
-      on:click={() => ($activeTab = "profile")}
-      class:active={$activeTab === "profile"}
+      on:click={() => ($activeTab = "sync")}
+      class:active={$activeTab === "sync"}
     >
       <GoSync />
     </button>
