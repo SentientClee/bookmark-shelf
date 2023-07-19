@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
   import GoSync from "svelte-icons/go/GoSync.svelte";
   import MdSettings from "svelte-icons/md/MdSettings.svelte";
   import FaBookmark from "svelte-icons/fa/FaBookmark.svelte";
   import { writable } from "svelte/store";
   import Settings from "./Settings.svelte";
+  import Sync from "./Sync.svelte";
 
   // Writable store to keep track of the active tab
   let activeTab = writable("bookmarks");
@@ -18,8 +19,7 @@
     </div>
   {:else if $activeTab === "sync"}
     <div class="tab-content">
-      <h1>Profile Tab</h1>
-      <p>Welcome to the profile tab.</p>
+      <Sync />
     </div>
   {:else if $activeTab === "settings"}
     <div class="tab-content">

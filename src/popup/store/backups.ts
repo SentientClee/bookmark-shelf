@@ -3,17 +3,17 @@ import type { BackupFile } from "../../types";
 
 export const backupFiles = writable<BackupFile[]>();
 
-function createExtensionStorageStore(key: string, startValue: any) {
+function createExtensionStorageStore<T>(key: string, startValue: T) {
   const { subscribe, set, update } = writable(startValue);
 
   // Fetch initial value from extension storage
-  browser.storage.local.get(key).then((result: any) => {
+  browser.storage.local.get(key).then((result: { [key: string]: T }) => {
     set(result[key] || startValue);
   });
 
   return {
     subscribe,
-    set: (value: any) => {
+    set: (value: T) => {
       browser.storage.local.set({ [key]: value }).then(() => {
         set(value);
       });
@@ -22,7 +22,10 @@ function createExtensionStorageStore(key: string, startValue: any) {
   };
 }
 
-export const selectedBackup = createExtensionStorageStore("backup", undefined);
+export const selectedBackup = createExtensionStorageStore<BackupFile>(
+  "backup",
+  undefined
+);
 
 export const fetchBackupFiles = async () => {
   const res = await browser.runtime.sendMessage({
