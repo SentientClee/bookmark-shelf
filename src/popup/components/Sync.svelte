@@ -5,14 +5,14 @@
   async function syncToBackup() {
     await browser.runtime.sendMessage({
       type: "sync_to_backup",
-      id: $selectedBackup.id,
+      fileId: $selectedBackup.id,
     });
   }
 
   async function syncToBrowser() {
     await browser.runtime.sendMessage({
       type: "sync_to_browser",
-      id: $selectedBackup.id,
+      fileId: $selectedBackup.id,
     });
   }
 </script>

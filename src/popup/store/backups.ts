@@ -34,18 +34,18 @@ export const fetchBackupFiles = async () => {
   backupFiles.set(res);
 };
 
-export const createBackupFile = async (name: string) => {
+export const createBackupFile = async (fileName: string) => {
   await browser.runtime.sendMessage({
     type: "create_backup_file",
-    name,
+    fileName,
   });
 };
 
-export const deleteBackupFile = async (id: string) => {
+export const deleteBackupFile = async (fileId: string) => {
   await browser.runtime.sendMessage({
     type: "delete_backup_file",
-    id,
+    fileId,
   });
   const currBackupFiles = get(backupFiles);
-  backupFiles.set(currBackupFiles.filter((file) => file.id !== id));
+  backupFiles.set(currBackupFiles.filter((file) => file.id !== fileId));
 };

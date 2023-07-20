@@ -35,7 +35,7 @@ export default class GoogleDrive {
     }
   }
 
-  async createFile(name: string, fileContent: Object) {
+  async createFile(fileName: string, fileContent: Object) {
     const token = await this.authProvider.getAuthToken();
     if (!token) {
       throw new Error("No access token provided");
@@ -44,9 +44,12 @@ export default class GoogleDrive {
     const data = new FormData();
     data.append(
       "metadata",
-      new Blob([JSON.stringify({ name, mimeType: "application/json" })], {
-        type: "application/json",
-      })
+      new Blob(
+        [JSON.stringify({ name: fileName, mimeType: "application/json" })],
+        {
+          type: "application/json",
+        }
+      )
     );
     data.append("file", JSON.stringify(fileContent));
 
