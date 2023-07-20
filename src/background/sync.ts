@@ -9,6 +9,7 @@ export default class Sync {
 
   async syncToBrowser(fileId: string) {
     const bookmarksTree = await this.gDrive.getFile(fileId);
+    console.log("LOADED DATA FROM GDRIVE", bookmarksTree);
   }
 
   async syncToBackup(fileId: string) {
