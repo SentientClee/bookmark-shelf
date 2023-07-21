@@ -35,27 +35,66 @@ export default class GoogleDrive {
     }
   }
 
-  async createFile(name: string, fileContent: Object) {
+  async createFile(fileName: string, fileContent: Object) {
     const token = await this.authProvider.getAuthToken();
     if (!token) {
       throw new Error("No access token provided");
     }
 
-    const form = new FormData();
-    form.append(
+    const data = new FormData();
+    data.append(
       "metadata",
-      new Blob([JSON.stringify({ name, mimeType: "application/json" })], {
-        type: "application/json",
-      })
+      new Blob(
+        [JSON.stringify({ name: fileName, mimeType: "application/json" })],
+        {
+          type: "application/json",
+        }
+      )
     );
-    form.append("file", JSON.stringify(fileContent));
+    data.append("file", JSON.stringify(fileContent));
 
     const request = new Request(
       "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
       {
         method: "POST",
         headers: new Headers({ Authorization: "Bearer " + token }),
-        body: form,
+        body: data,
+      }
+    );
+
+    try {
+      const response = await fetch(request);
+      if (!response.ok) {
+        throw new Error(`Error status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async updateFie(fileId: string, fileContent: Object) {
+    const token = await this.authProvider.getAuthToken();
+    if (!token) {
+      throw new Error("No access token provided");
+    }
+
+    const data = new FormData();
+    data.append(
+      "metadata",
+      new Blob([JSON.stringify({ name, mimeType: "application/json" })], {
+        type: "application/json",
+      })
+    );
+    data.append("file", JSON.stringify(fileContent));
+
+    const request = new Request(
+      `https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart`,
+      {
+        method: "PATCH",
+        headers: new Headers({ Authorization: "Bearer " + token }),
+        body: data,
       }
     );
 
@@ -99,6 +138,7 @@ export default class GoogleDrive {
       }
       const data = await response.json();
       console.log(data);
+      return data;
     } catch (error) {
       console.error(error);
     }

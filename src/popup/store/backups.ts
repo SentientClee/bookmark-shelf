@@ -3,17 +3,17 @@ import type { BackupFile } from "../../types";
 
 export const backupFiles = writable<BackupFile[]>();
 
-function createExtensionStorageStore(key: string, startValue: any) {
+function createExtensionStorageStore<T>(key: string, startValue: T) {
   const { subscribe, set, update } = writable(startValue);
 
   // Fetch initial value from extension storage
-  browser.storage.local.get(key).then((result: any) => {
+  browser.storage.local.get(key).then((result: { [key: string]: T }) => {
     set(result[key] || startValue);
   });
 
   return {
     subscribe,
-    set: (value: any) => {
+    set: (value: T) => {
       browser.storage.local.set({ [key]: value }).then(() => {
         set(value);
       });
@@ -22,7 +22,10 @@ function createExtensionStorageStore(key: string, startValue: any) {
   };
 }
 
-export const selectedBackup = createExtensionStorageStore("backup", undefined);
+export const selectedBackup = createExtensionStorageStore<BackupFile>(
+  "backup",
+  undefined
+);
 
 export const fetchBackupFiles = async () => {
   const res = await browser.runtime.sendMessage({
@@ -31,18 +34,18 @@ export const fetchBackupFiles = async () => {
   backupFiles.set(res);
 };
 
-export const createBackupFile = async (name: string) => {
+export const createBackupFile = async (fileName: string) => {
   await browser.runtime.sendMessage({
     type: "create_backup_file",
-    name,
+    fileName,
   });
 };
 
-export const deleteBackupFile = async (id: string) => {
+export const deleteBackupFile = async (fileId: string) => {
   await browser.runtime.sendMessage({
     type: "delete_backup_file",
-    id,
+    fileId,
   });
   const currBackupFiles = get(backupFiles);
-  backupFiles.set(currBackupFiles.filter((file) => file.id !== id));
+  backupFiles.set(currBackupFiles.filter((file) => file.id !== fileId));
 };

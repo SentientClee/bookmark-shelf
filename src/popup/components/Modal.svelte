@@ -1,3 +1,4 @@
+<!-- TODO: Add lang="ts" and fix errors -->
 <script>
   import { createEventDispatcher, onMount, onDestroy } from "svelte";
 

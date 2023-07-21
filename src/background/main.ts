@@ -1,8 +1,10 @@
 import GoogleAuthProvider from "./auth/GoogleOAuthProvider";
 import GoogleDrive from "./storage/GoogleDrive";
+import Sync from "./Sync";
 
 const authProvider = new GoogleAuthProvider();
 const gDrive = new GoogleDrive({ authProvider });
+const sync = new Sync({ gDrive });
 
 browser.runtime.onMessage.addListener(
   (request, _, sendResponse: (obj: any) => void) => {
@@ -22,11 +24,19 @@ browser.runtime.onMessage.addListener(
     }
 
     if (request.type === "create_backup_file") {
-      gDrive.createFile(request.name, { womp: "diggity" }).then(sendResponse);
+      gDrive.createFile(request.fileName, {}).then(sendResponse);
     }
 
     if (request.type === "delete_backup_file") {
-      gDrive.deleteFile(request.id).then(sendResponse);
+      gDrive.deleteFile(request.fileId).then(sendResponse);
+    }
+
+    if (request.type === "sync_to_backup") {
+      sync.syncToBackup(request.fileId).then(sendResponse);
+    }
+
+    if (request.type === "sync_to_browser") {
+      sync.syncToBrowser(request.fileId).then(sendResponse);
     }
 
     // Return 'true' to make 'sendResponse' available to awaited async calls
