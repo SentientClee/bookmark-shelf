@@ -8,8 +8,13 @@ export default class Sync {
   }
 
   async syncToBrowser(fileId: string) {
-    const bookmarksTree = await this.gDrive.getFile(fileId);
-    console.log("LOADED DATA FROM GDRIVE", bookmarksTree);
+    const bookmarksTreeFromFile = await this.gDrive.getFile(fileId);
+    const bookmarksTreeFromBrowser = await browser.bookmarks.getTree();
+    console.log("LOADED DATA FROM GDRIVE", bookmarksTreeFromFile);
+
+    // Generate list of all bookmarks to create
+    // First delete bookmarks that aren't present in `bookmarksTreeFromFile`
+    // Second create all bookmarks that aren't present in browser
   }
 
   async syncToBackup(fileId: string) {

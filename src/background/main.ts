@@ -1,6 +1,6 @@
 import GoogleAuthProvider from "./auth/GoogleOAuthProvider";
 import GoogleDrive from "./storage/GoogleDrive";
-import Sync from "./sync";
+import Sync from "./Sync";
 
 const authProvider = new GoogleAuthProvider();
 const gDrive = new GoogleDrive({ authProvider });
